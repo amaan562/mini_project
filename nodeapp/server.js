@@ -20,7 +20,7 @@ app.get("/allTasks/:orderByField/:direction", (req, res) => {
   getAllTasks(req, res);
 });
 
-app.put("/amendTask/:taskID/:fieldName", (req, res) => {
+app.put("/amendTask/:taskID", (req, res) => {
   amendTask(req, res);
 });
 

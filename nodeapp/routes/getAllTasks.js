@@ -3,8 +3,8 @@ const taskModel = require("../models/TaskSchema");
 module.exports = async (req, res) => {
   const { orderByField } = req.params;
   const direction = req.params.direction === "Descending" ? -1 : 1;
-  await taskModel.find({},null,{sort: {orderByField : direction}},(err,tasks)=>{
-    if(err)   res.sendstatus(400);
-    else      res.status(200).send(tasks);
-  });
+  try{
+    let prom = await taskModel.find({}).sort([[orderByField , direction]])
+    res.status(200).send(prom);
+  }catch(err){  res.status(400).send(err) }
 };

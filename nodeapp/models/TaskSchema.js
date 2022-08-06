@@ -16,6 +16,14 @@ const taskSchema = mongoose.Schema({
     creation_date: {
         type: Date,
         default: undefined
+    },
+    completed: {
+        type: Boolean,
+        default: false
+    },
+    priority: {
+        type: String,
+        default: "Low"
     }
 }); 
 

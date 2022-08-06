@@ -9,7 +9,12 @@ const addTask = require("./routes/addTask.js");
 const amendTask = require("./routes/amendTask.js");
 const deleteTask = require("./routes/deleteTask.js");
 const port = process.env.PORT;
+const cors = require("cors");
 
+const options = {
+    origin: 'http://localhost:3000',
+}
+app.use(cors(options))
 dotenv.config()
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))

@@ -13,8 +13,8 @@ class App extends Component {
       isFetched: false,
       tasks: [],
       taskOrder: {
-        orderByField: "task_creation_dt",
-        direction: "Descending",
+        orderByField: "creation_date",
+        direction: "Ascending",
       },
       newTaskTitle: "",
     };
@@ -28,10 +28,10 @@ class App extends Component {
     this.sortTasks = this.sortTasks.bind(this);
   }
 
-  async getAllTasks(newTask) {
+  async getAllTasks() {
     const { orderByField, direction } = this.state.taskOrder;
     const res = await fetch(
-      `/allTasks/${orderByField}/${direction}/${newTask}`
+      `http://localhost:5000/allTasks/${orderByField}/${direction}`
     );
     try {
       const data = await res.json();
@@ -48,13 +48,13 @@ class App extends Component {
   }
 
   handleTaskUpdate(e) {
-    const taskID = Number(e.target.parentNode.id);
+    const taskID = e.target.parentNode.id;
     const fieldToUpdate = e.target.name;
     let updateValue;
 
-    if (fieldToUpdate === "task_completed") {
+    if (fieldToUpdate === "completed") {
       updateValue = e.target.checked;
-    } else if (fieldToUpdate === "task_scheduled_dt") {
+    } else if (fieldToUpdate === "scheduled_date") {
       if (e.target.value !== "") {
         updateValue = e.target.value + "T00:00:00.000Z";
       } else {
@@ -63,7 +63,7 @@ class App extends Component {
     } else {
       updateValue = e.target.value;
     }
-
+  
     const updatedTaskState = this.state.tasks.map((task) => {
       const updateTask = (task) => {
         const taskCopy = JSON.parse(JSON.stringify(task));
@@ -82,35 +82,38 @@ class App extends Component {
     this.setState({ tasks: updatedTaskState });
   }
 
-  putTaskUpdate(e) {
-    const taskID = Number(e.target.parentNode.id);
+  async putTaskUpdate(e) {
+    const taskID = e.target.parentNode.id;
     const fieldToUpdate = e.target.name;
     let updateValue;
 
     this.state.tasks.forEach((val) => {
-      if (val.task_id === taskID) updateValue = val[fieldToUpdate];
+      if (val._id === taskID) updateValue = val[fieldToUpdate];
     });
 
-    if (fieldToUpdate === "task_title" && updateValue === "") return;
+    if (fieldToUpdate === "title" && updateValue === "") return;
 
-    if (fieldToUpdate === "task_title" || fieldToUpdate === "task_desc") {
-      updateValue = encodeUpdateValue(updateValue);
-    }
+    // if (fieldToUpdate === "title" || fieldToUpdate === "description") {
+    //   updateValue = encodeUpdateValue(updateValue);
+    // }
 
     if (updateValue === "") updateValue = "null";
 
-    fetch(`/amendTask/${taskID}/${fieldToUpdate}/${updateValue}`, {
+    const res = await fetch(`http://localhost:5000/amendTask/${taskID}`, {
       method: "PUT",
+      body: {
+          "task" : updateValue
+      }
     });
   }
-
+ 
   async deleteTask(taskID) {
     const response = window.confirm(
       "Are you sure that you want to delete this task?"
     );
 
     if (response) {
-      const res = await fetch(`/deleteTask/${taskID}`, {
+      const res = await fetch(`http://localhost:5000/deleteTask/${taskID}`, {
         method: "DELETE",
       });
       if (res.status === 200) {
@@ -126,74 +129,35 @@ class App extends Component {
   }
 
   async postNewTask() {
-    const newTaskTitle = encodeUpdateValue(this.state.newTaskTitle);
+    const newTaskTitle = this.state.newTaskTitle;
 
     if (newTaskTitle === "") return;
 
-    const res = await fetch(`/addTask/${newTaskTitle}`, {
+    const res = await fetch(`http://localhost:5000/addTask/${newTaskTitle}`, {
       method: "POST",
     });
 
     if (res.status === 200) {
       this.setState({ newTaskTitle: "" });
-      this.getAllTasks(true);
+      this.getAllTasks();
     }
   }
 
   sortTasks(selectValue) {
     const { orderByField, direction } = selectValue;
 
-    const allNulls = this.state.tasks.every((val) => {
-      return val[orderByField] === null;
-    });
-
-    if (allNulls) return;
-
-    const reorderedTasks = this.state.tasks
-      .map((val) => {
-        return val;
-      })
-      .sort((a, b) => {
-        const firstVal = convertToNumber(a[orderByField]);
-        const secondVal = convertToNumber(b[orderByField]);
-
-        if (firstVal === null && secondVal === null) {
-          return (
-            convertToNumber(b.task_creation_dt) -
-            convertToNumber(a.task_creation_dt)
-          );
-        }
-
-        if (firstVal === null) {
-          return 1;
-        }
-
-        if (secondVal === null) {
-          return -1;
-        }
-
-        if (direction === "Ascending") {
-          return firstVal - secondVal;
-        }
-
-        if (direction === "Descending") {
-          return secondVal - firstVal;
-        }
-
-        return 0;
-      });
-
     this.setState({
-      tasks: reorderedTasks,
       taskOrder: {
         orderByField,
         direction,
-      },
+      }
     });
+
+    this.getAllTasks();
   }
 
   componentDidMount() {
-    this.getAllTasks(false);
+    this.getAllTasks();
   }
 
   render() {

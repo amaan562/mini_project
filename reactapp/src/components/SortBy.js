@@ -16,8 +16,8 @@ class SortBy extends Component {
 
   refactorSelectValue(selectValue) {
     const lookup = {
-      "Created Date": "task_creation_dt",
-      "Scheduled Date": "task_scheduled_dt",
+      "Created Date": "creation_date",
+      "Scheduled Date": "scheduled_date",
     };
 
     const orderByField = selectValue.split("(")[0].trim();

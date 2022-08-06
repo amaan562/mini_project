@@ -4,12 +4,12 @@ import "../css/Task.css";
 
 const Task = (props) => {
   const {
-    task_id: taskID,
-    task_title: taskTitle,
-    task_desc: taskDesc,
-    task_completed: taskCompleted,
-    task_scheduled_dt: taskScheduledDt,
-    priority_desc: priorityDesc,
+    _id: taskID,
+    title: taskTitle,
+    description: taskDesc,
+    completed: taskCompleted,
+    scheduled_date: taskScheduledDt,
+    priority: priorityDesc,
   } = props.task;
   const cleanedScheduledDt = taskScheduledDt
     ? taskScheduledDt.substring(0, 10)

@@ -12,6 +12,7 @@ class App extends Component {
       error: null,
       isFetched: false,
       tasks: [],
+      updatedTask: null,
       taskOrder: {
         orderByField: "creation_date",
         direction: "Ascending",
@@ -56,14 +57,16 @@ class App extends Component {
       updateValue = e.target.checked;
     } else if (fieldToUpdate === "scheduled_date") {
       if (e.target.value !== "") {
-        updateValue = e.target.value + "T00:00:00.000Z";
+        updateValue = e.target.value;
+        // updateValue = e.target.value + "T00:00:00.000Z";
       } else {
         updateValue = null;
       }
     } else {
       updateValue = e.target.value;
     }
-  
+    console.log("id: "+taskID+" , field: "+fieldToUpdate+" , value: "+updateValue);
+    var temp = null;
     const updatedTaskState = this.state.tasks.map((task) => {
       const updateTask = (task) => {
         const taskCopy = JSON.parse(JSON.stringify(task));
@@ -72,18 +75,24 @@ class App extends Component {
         return taskCopy;
       };
 
-      if (task.task_id === taskID) {
-        return updateTask(task);
+      if (task._id === taskID) {
+        temp  =  updateTask(task);
+        // console.log("updated state: "+temp); 
+        return temp;
       } else {
         return task;
       }
     });
 
-    this.setState({ tasks: updatedTaskState });
+    this.setState({ 
+      tasks: updatedTaskState,
+      updatedTask: temp
+    });
   }
 
   async putTaskUpdate(e) {
-    const taskID = e.target.parentNode.id;
+    // const taskID = e.target.parentNode.id;
+    const taskID = this.state.updatedTask._id;
     const fieldToUpdate = e.target.name;
     let updateValue;
 
@@ -99,12 +108,17 @@ class App extends Component {
 
     if (updateValue === "") updateValue = "null";
 
+    // updateValue = e.target.value;
+    var task = this.state.updatedTask;
     const res = await fetch(`http://localhost:5000/amendTask/${taskID}`, {
       method: "PUT",
-      body: {
-          "task" : updateValue
-      }
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ task : task })
     });
+    console.log("return : "+JSON.stringify(res));
   }
  
   async deleteTask(taskID) {

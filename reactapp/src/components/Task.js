@@ -22,7 +22,7 @@ const Task = (props) => {
         <input
           className="task__title"
           type="text"
-          name="task_title"
+          name="title"
           value={taskTitle}
           onChange={props.handleTaskUpdate}
           onBlur={props.putTaskUpdate}
@@ -30,7 +30,7 @@ const Task = (props) => {
         <input
           className="task__completed"
           type="checkbox"
-          name="task_completed"
+          name="completed"
           checked={taskCompleted}
           onChange={props.handleTaskUpdate}
           onBlur={props.putTaskUpdate}
@@ -38,7 +38,7 @@ const Task = (props) => {
         <textarea
           className="task__desc"
           type="text"
-          name="task_desc"
+          name="description"
           rows="3"
           cols="20"
           placeholder="..."
@@ -49,14 +49,14 @@ const Task = (props) => {
         <input
           className="task__scheduledDt"
           type="date"
-          name="task_scheduled_dt"
+          name="scheduled_date"
           value={cleanedScheduledDt}
           onChange={props.handleTaskUpdate}
           onBlur={props.putTaskUpdate}
         />
         <select
           className={priorityColour}
-          name="priority_desc"
+          name="priority"
           value={priorityDesc}
           onChange={props.handleTaskUpdate}
           onBlur={props.putTaskUpdate}

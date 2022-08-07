@@ -15,4 +15,4 @@ const DeleteTaskButton = (props) => {
   );
 };
 
-export default DeleteTaskButton;
+export default DeleteTaskButton; 

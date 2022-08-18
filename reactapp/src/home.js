@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+// import { Navigate } from "./Navigate";
 import Task from "./components/Task";
 import NewTaskForm from "./components/NewTaskForm";
 import SortBy from "./components/SortBy";
 import "./css/App.css";
+import { Navigate } from "react-router-dom";
 import { encodeUpdateValue, convertToNumber } from "./utilityFunctions";
 
-class App extends Component {
+class Home extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -19,6 +21,7 @@ class App extends Component {
         direction: "Ascending",
       },
       newTaskTitle: "",
+      redirect: false
     };
 
     this.getAllTasks = this.getAllTasks.bind(this);
@@ -33,8 +36,9 @@ class App extends Component {
   async getAllTasks() {
     const { orderByField, direction } = this.state.taskOrder;
     const res = await fetch(
-      `http://localhost:5000/allTasks/${orderByField}/${direction}`
-    );
+      `http://localhost:5000/allTasks/${this.state.username}/${orderByField}/${direction}`,{
+            method: "GET",
+        });
     try {
       const data = await res.json();
       this.setState({
@@ -150,6 +154,9 @@ class App extends Component {
 
     const res = await fetch(`http://localhost:5000/addTask/${newTaskTitle}`, {
       method: "POST",
+      body: {
+        username: this.username
+      }
     });
 
     if (res.status === 200) {
@@ -171,14 +178,20 @@ class App extends Component {
     this.getAllTasks();
   }
 
-  componentDidMount() {
-    this.getAllTasks();
-    try{
-        var user = localStorage.getItem("user");
-        this.setState({
-            
-        })
-    }catch(e){}
+  componentDidMount(){
+      try{
+          var user = localStorage.getItem("user");
+          this.setState({
+              username: user
+          })
+          this.getAllTasks();
+      }catch(e){
+          let path = "/login";
+          this.setState({
+            redirect: true
+          })
+          // useNavigate(path);
+      }
   }
 
   render() {
@@ -216,10 +229,12 @@ class App extends Component {
           />
           {tasks.length > 0 ? <SortBy sortTasks={this.sortTasks} /> : null}
           {tasks}
+          { this.state.redirect && <Navigate to='/login' replace={true}/>}
         </section>
+        
       );
     }
   }
 }
 
-export default App;
+export default Home;

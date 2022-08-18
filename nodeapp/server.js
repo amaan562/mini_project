@@ -8,6 +8,8 @@ const getAllTasks = require("./routes/getAllTasks.js");
 const addTask = require("./routes/addTask.js");
 const amendTask = require("./routes/amendTask.js");
 const deleteTask = require("./routes/deleteTask.js");
+const loginUser = require("./routes/loginUser.js");
+const signupUser = require("./routes/signupUser.js");
 const port = process.env.PORT;
 const cors = require("cors");
 
@@ -36,7 +38,12 @@ app.post("/addTask/:taskTitle", (req, res) => {
 app.delete("/deleteTask/:taskID", (req, res) => {
   deleteTask(req, res);
 });
-
+app.post("/login", (req, res) => {
+  loginUser(req, res);
+});
+app.post("/signup", (req, res) => {
+  signupUser(req, res);
+});
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static(path.join(__dirname, "../client/build")));
 

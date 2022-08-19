@@ -6,6 +6,7 @@ module.exports =async (req, res) => {
   let tm = new taskSchema();
   tm.title = taskTitle;
   tm.username = username;
+  tm.creation_date = new Date();
   await tm.save();
   res.send("got it");
 };

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const taskSchema = mongoose.Schema({
+    username: {
+        type: String,
+        default: null
+    },
     title: {
         type: String,
         default: ""

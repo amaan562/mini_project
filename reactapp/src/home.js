@@ -178,9 +178,9 @@ class Home extends Component {
     this.getAllTasks();
   }
 
-  componentDidMount(){
+  async componentDidMount(){
       try{
-          var user = localStorage.getItem("user");
+          var user = await localStorage.getItem("user");
           this.setState({
               username: user
           })

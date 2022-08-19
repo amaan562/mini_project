@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 mongoose.connect(process.env.DATABASE_ACCESS1, () => console.log("Database1 connected"));
 
-app.get("/allTasks/:orderByField/:direction", (req, res) => {
+app.get("/allTasks/:username/:orderByField/:direction", (req, res) => {
   getAllTasks(req, res);
 });
 

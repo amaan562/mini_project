@@ -1,0 +1,34 @@
+.navbar{
+    width: 100%;
+    height: 50px;
+    font-size: 1.5em;
+    background-color: rgb(127, 127, 252);
+    color: white;
+}
+.navbar>div{
+    height: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.logout{
+    color :rgb(127, 127, 252);
+    background-color: white;
+    border-radius: 5px;
+    border: none;
+    width: 100px;
+    height: 80%;
+    transition: 0.5s;
+}
+.logout:hover{
+    background-color: rgb(127, 127, 252);
+    color: white;
+    border: 2px solid white;
+}

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Task from "./components/Task";
 import NewTaskForm from "./components/NewTaskForm";
 import SortBy from "./components/SortBy";
+import Navbar from "./components/Navbar";
 import "./css/App.css";
 import { Navigate } from "react-router-dom";
 import { encodeUpdateValue, convertToNumber } from "./utilityFunctions";
@@ -12,6 +13,7 @@ class Home extends Component {
     super();
     this.state = {
       username: null,
+      nameOnNav: null,
       error: null,
       isFetched: false,
       tasks: [],
@@ -151,12 +153,14 @@ class Home extends Component {
     const newTaskTitle = this.state.newTaskTitle;
 
     if (newTaskTitle === "") return;
-
+    console.log("username react: "+this.state.username);
     const res = await fetch(`http://localhost:5000/addTask/${newTaskTitle}`, {
       method: "POST",
-      body: {
-        username: this.username
-      }
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username : this.state.username })
     });
 
     if (res.status === 200) {
@@ -179,13 +183,25 @@ class Home extends Component {
   }
 
   async componentDidMount(){
-      try{
-          var user = await localStorage.getItem("user");
+      var user = await localStorage.getItem("user");
+      if(user!=null){
+        console.log("before");
+          const res = await fetch(
+            `http://localhost:5000/getName/${user}`,{
+                  method: "GET",
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+              });
           this.setState({
-              username: user
-          })
+            username: user,
+            nameOnNav : res.data
+          });
+          console.log(this.state.username+" $$$ "+this.state.nameOnNav);
           this.getAllTasks();
-      }catch(e){
+      }
+      else{
           let path = "/login";
           this.setState({
             redirect: true
@@ -221,6 +237,8 @@ class Home extends Component {
         );
       });
       return (
+        <>
+        <Navbar name={this.state.nameOnNav} />
         <section className="tasksContainer">
           <NewTaskForm
             newTaskTitle={this.state.newTaskTitle}
@@ -231,7 +249,7 @@ class Home extends Component {
           {tasks}
           { this.state.redirect && <Navigate to='/login' replace={true}/>}
         </section>
-        
+        </>
       );
     }
   }

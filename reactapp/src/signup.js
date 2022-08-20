@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
-// import "./css/signup.css";
+import "./css/login.css";
 import { useNavigate, Link } from "react-router-dom";
 
 function Signup() {
+    useEffect(() => {
+        async function navigation(){
+            var temp = await localStorage.getItem("user");
+            console.log("username: "+temp);
+            if(temp!=null)  navigate("/home");
+        }
+        navigation();
+      });
     const navigate = useNavigate();
     const [error, setError] = useState("");
     const [formValues, setFormValues] = useState({
@@ -46,7 +54,7 @@ function Signup() {
     }
 
     return(
-        <div className="center">
+        <div className="center login">
             <h1>Signup</h1>
             <form onSubmit={(e) => submit(e)}>
                 <div className="error">{error}</div>

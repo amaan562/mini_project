@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
-body{
+.body{
 	margin: 0;
 	padding: 0;
 	font-family: montserrat;
@@ -14,44 +14,46 @@ body{
 	transform: translate(-50%,-50%);
 	position: absolute;
 	width: 400px;
-	border: 2px solid #86c232;
+	border: 2px solid white;
 	padding: 5px;
 	border-radius: 10px;
-	background: #222629;
-	color: #86c232;
+	background: rgb(50, 50, 199);
+	color: white;
 }
-h1{
+.login h1{
 	text-align: center;
-	border-bottom: 2px solid #86c232;   
+	border-bottom: 2px solid white;   
 	padding-bottom: 20px;
 }
-form{
+.login form{
 	box-sizing: border-box;
 	padding: 0 25px;
 }
-.text_field {
+.login .text_field {
 	position: relative;
-	border-bottom: 1px solid grey;
+	border-bottom: 1px solid white;
 	margin: 20px;
 }
 
-.text_field input {
+.login .text_field input {
 	width: 100%;
 	height: 40px;
 	border: none;
 	outline: none;
 	font-size: 20px;
 }
-.text_field label{
+.login .text_field label{
+	font-size: 1.2em;
 	position: absolute;
 	top: 50%;
-	left: 5px;
+	left: 1px;
 	transform: translateY(-50%);
+	top: -5px;
 	pointer-events: none;
-	color: grey;
+	color: white;
 	transition: .5s;
 }
-.text_field span{
+.login .text_field span{
 	position: absolute;
 	width: 0;
 	height: 2px;
@@ -59,47 +61,50 @@ form{
 	transition-timing-function: linear;
 }
 /* .text_field input:valid ~ label*/
- .text_field input:focus ~ label, .text_field input:valid ~ label{
+ /* .login .text_field input:focus ~ label, .text_field input:valid ~ label{
 	top: -5px;
 	color: #86c232;
 }
-/* .text_field input:valid ~ span*/
-.text_field input:focus ~ span, .text_field input:valid ~ span{
+.login .text_field input:focus ~ span, .text_field input:valid ~ span{
 	width: 100%;
 	background-color: #86c232;
-}
-input{
+} */
+.login input{
 	border-radius: 5px;
-	background: #222629;
+	background: inherit;
 	color: white;
 }
-input[type="submit"]{
+.login input[type="submit"]{
 	width: 100%;
 	height: 40px;
 	font-size: 20px;
-	color: white;
+	color: rgb(50, 50, 199);
 	border: none;
 	border-radius:25px;
-	background-color: #61892f;
+	background-color: white;
 	/*box-shadow: 0 4px 8px 0 #808080, 0 6px 20px 0 #bfbfbf;*/
 	box-shadow: 0 0 7px #fff;
 	transition: .5s;
 	margin: 20px 0;
 	cursor: pointer;
 }
-input[type="submit"]:hover{
+.login input[type="submit"]:hover{
 	box-shadow: none;
-	background-color:#86c232;
+	background-color:gray;
+	color: white;
 }
-.signup_link{
+.login .signup_link{
 	width: 100%;
 	text-align: right;
 	margin-bottom: 10px;
 	color : white;
 }
-.error{
+.login .error{
 	color: red;
+	font-size: 1.2em;
+	font-weight: bold;
+	margin: 10px 0 10px 20px;
 }
-a, a:visited, a:hover, a:active {
+.login a, a:visited, a:hover, a:active {
   color: inherit;
 }

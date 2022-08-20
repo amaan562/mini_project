@@ -6,8 +6,13 @@
   padding: 0.6rem;
   font-size: 1.5rem;
   background-color: #4d96df;
+  box-shadow: none;
   border: none;
   border-radius: 0.5rem;
-  outline: none; }
+  transition: .5s;
+  outline: none;
+}
   .newTaskButton:hover {
-    background-color: #1a4679; }
+    color: white;
+    box-shadow: 0 0 10px #4d96df;
+  }

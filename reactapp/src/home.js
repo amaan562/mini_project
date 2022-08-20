@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import { Navigate } from "./Navigate";
 import Task from "./components/Task";
+import Axios from "axios";
 import NewTaskForm from "./components/NewTaskForm";
 import SortBy from "./components/SortBy";
 import Navbar from "./components/Navbar";
@@ -186,17 +187,21 @@ class Home extends Component {
       var user = await localStorage.getItem("user");
       if(user!=null){
         console.log("before");
-          const res = await fetch(
-            `http://localhost:5000/getName/${user}`,{
-                  method: "GET",
-                  headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                  },
-              });
+        const url = `http://localhost:5000/getName/${user}`;
+        let res = await Axios.get(url);
+        let tempname = res.data;
+          // const res = await fetch(
+          //   `http://localhost:5000/getName/${user}`,{
+          //         method: "GET",
+          //         // headers: {
+          //         //   'Accept': 'application/json',
+          //         //   'Content-Type': 'application/json'
+          //         // },
+          //     });
+          // console.log("res: "+JSON.stringify(tempname));
           this.setState({
             username: user,
-            nameOnNav : res.data
+            nameOnNav : tempname
           });
           console.log(this.state.username+" $$$ "+this.state.nameOnNav);
           this.getAllTasks();
@@ -221,6 +226,7 @@ class Home extends Component {
     } else if (!isFetched) {
       return (
         <section>
+          { this.state.redirect && <Navigate to='/login' replace={true}/>}
           <p>Your tasks are loading...</p>
         </section>
       );
@@ -247,7 +253,6 @@ class Home extends Component {
           />
           {tasks.length > 0 ? <SortBy sortTasks={this.sortTasks} /> : null}
           {tasks}
-          { this.state.redirect && <Navigate to='/login' replace={true}/>}
         </section>
         </>
       );

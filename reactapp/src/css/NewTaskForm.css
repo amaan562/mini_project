@@ -7,10 +7,15 @@
   padding: 1.5rem;
   border: 0.1rem solid #cccccc;
   border-radius: 1rem;
-  box-shadow: -0.5rem 0.5rem 0.8rem 0 #c1ccc6;
-  background-color: white; }
+  /* box-shadow: -0.5rem 0.5rem 0.8rem 0 #c1ccc6; */
+  box-shadow: 0;
+  transition: .5s;
+  background-color: white; 
+}
   .newTaskForm:hover {
-    box-shadow: -0.5rem 0.5rem 0.8rem 0 #343a40; }
+    /* box-shadow: -0.5rem 0.5rem 0.8rem 0 #343a40;  */
+    box-shadow: 0 0 7px #4d96df;
+  }
   .newTaskForm .newTaskForm__titleInput {
     width: 70%;
     font-size: 1.75rem;
